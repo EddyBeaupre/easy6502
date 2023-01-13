@@ -9,14 +9,14 @@ The original 6502 version can be found at https://skilldrick.github.io/easy6502/
 
 ## Supported new opcodes
 
-|instruction|OpCode|Implemented|
-|-----------|------|-----------|
-|BRA r|0x7A|No|
-|STZ a|0x9C|No|
-|STZ a,X|0x9E|No|
-|ORA (d)|0x12|No|
-|AND (d)|0x32|No|
-|EOR (d)|0x52|No|
+|instruction|OpCode|Implemented|Description|
+|-----------|------|-----------|-----------|
+|BRA r|0x7A|No|Branch Always|
+|STZ a|0x9C|No|Store Zero (Absolute)|
+|STZ a,X|0x9E|No|Store Zero (Absolute, X)|
+|ORA (d)|0x12|No|OR with Accumulator (Indirect)|
+|AND (d)|0x32|No|AND with Accumulator (Indirect)|
+|EOR (d)|0x52|No|EOR with Accumulator (Indirect)|
 |ADC (d)|0x72|No|
 |STA (d)|0x92|No|
 |LDA (d)|0xB2|No|
