@@ -805,6 +805,16 @@ function SimulatorWidget(node) {
         stackPush(regA);
         //PHA
       },
+      
+      ida: function () {
+        stackPush(regX);
+        //PHX
+      },
+      
+      i5a: function () {
+        stackPush(regY);
+        //PHA
+      },
 
       i49: function () {
         regA ^= popByte();
@@ -930,6 +940,18 @@ function SimulatorWidget(node) {
         regA = stackPop();
         setNVflagsForRegA();
         //PLA
+      },
+      
+      ifa: function () {
+        regX = stackPop();
+        setNVflagsForRegX();
+        //PLX
+      },
+      
+      i7a: function () {
+        regY = stackPop();
+        setNVflagsForRegY();
+        //PLY
       },
 
       i69: function () {
@@ -1881,6 +1903,10 @@ function SimulatorWidget(node) {
       ["TSX", null, null, null, null, null, null, null, null, null, null, 0xba, null],
       ["PHA", null, null, null, null, null, null, null, null, null, null, 0x48, null],
       ["PLA", null, null, null, null, null, null, null, null, null, null, 0x68, null],
+      ["PHX", null, null, null, null, null, null, null, null, null, null, 0xda, null],
+      ["PLX", null, null, null, null, null, null, null, null, null, null, 0xfa, null],
+      ["PHY", null, null, null, null, null, null, null, null, null, null, 0x5a, null],
+      ["PLY", null, null, null, null, null, null, null, null, null, null, 0x7a, null],
       ["PHP", null, null, null, null, null, null, null, null, null, null, 0x08, null],
       ["PLP", null, null, null, null, null, null, null, null, null, null, 0x28, null],
       ["STX", null, 0x86, null, 0x96, 0x8e, null, null, null, null, null, null, null],
