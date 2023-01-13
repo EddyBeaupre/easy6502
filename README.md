@@ -40,3 +40,6 @@ The original 6502 version can be found at https://skilldrick.github.io/easy6502/
 |JMP (a,X)|0x7C|No|Jump (Absolute, X)|
 |STZ a|0x9C|No|Store Zero (Absolute)|
 |STZ a,X|0x9E|No|Store Zero (Absolute, X)|
+
+Full list of 65C02 OpCodes: https://feertech.com/legion/reference65c02.html
+Official WDC datasheet for the 65C02: https://www.westerndesigncenter.com/wdc/documentation/w65c02s.pdf
