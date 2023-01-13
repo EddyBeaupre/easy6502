@@ -11,7 +11,7 @@
 
 'use strict';
 
-var RamAddress = 0xE000;
+var CodeAddress = 0xE000;
 
 function SimulatorWidget(node) {
   var $node = $(node);
@@ -242,7 +242,7 @@ function SimulatorWidget(node) {
   }
 
   function Memory() {
-    var memArray = new Array(RamAddress);
+    var memArray = new Array(CodeAddress);
 
     function set(addr, val) {
       return memArray[addr] = val;
@@ -303,7 +303,7 @@ function SimulatorWidget(node) {
     var regX = 0;
     var regY = 0;
     var regP = 0;
-    var regPC = RamAddress;
+    var regPC = CodeAddress;
     var regSP = 0xff;
     var codeRunning = false;
     var debug = false;
@@ -806,16 +806,6 @@ function SimulatorWidget(node) {
         //PHA
       },
       
-      ida: function () {
-        stackPush(regX);
-        //PHX
-      },
-      
-      i5a: function () {
-        stackPush(regY);
-        //PHA
-      },
-
       i49: function () {
         regA ^= popByte();
         EOR();
@@ -888,6 +878,11 @@ function SimulatorWidget(node) {
         regA ^= value;
         EOR();
       },
+      
+      i5a: function () {
+        stackPush(regY);
+        //PHY
+      },
 
       i5d: function () {
         var addr = popWord() + regX;
@@ -942,18 +937,6 @@ function SimulatorWidget(node) {
         //PLA
       },
       
-      ifa: function () {
-        regX = stackPop();
-        setNVflagsForRegX();
-        //PLX
-      },
-      
-      i7a: function () {
-        regY = stackPop();
-        setNVflagsForRegY();
-        //PLY
-      },
-
       i69: function () {
         var value = popByte();
         testADC(value);
@@ -1034,6 +1017,12 @@ function SimulatorWidget(node) {
         var value = memory.get(addr + regY);
         testADC(value);
         //ADC
+      },
+      
+      i7a: function () {
+        regY = stackPop();
+        setNVflagsForRegY();
+        //PLY
       },
 
       i7d: function () {
@@ -1381,6 +1370,11 @@ function SimulatorWidget(node) {
         doCompare(regA, value);
         //CMP
       },
+      
+      ida: function () {
+        stackPush(regX);
+        //PHX
+      },
 
       idd: function () {
         var addr = popWord() + regX;
@@ -1503,6 +1497,12 @@ function SimulatorWidget(node) {
         var value = memory.get(addr + regY);
         testSBC(value);
         //SBC
+      },
+      
+      ifa: function () {
+        regX = stackPop();
+        setNVflagsForRegX();
+        //PLX
       },
 
       ifd: function () {
@@ -1706,11 +1706,11 @@ function SimulatorWidget(node) {
     // reset() - Reset CPU and memory.
     function reset() {
       display.reset();
-      for (var i = 0; i < RamAddress; i++) { // clear ZP, stack and screen
+      for (var i = 0; i < CodeAddress; i++) { // clear ZP, stack and screen
         memory.set(i, 0x00);
       }
       regA = regX = regY = 0;
-      regPC = RamAddress;
+      regPC = CodeAddress;
       regSP = 0xff;
       regP = 0x30;
       updateDebugInfo();
@@ -1917,7 +1917,7 @@ function SimulatorWidget(node) {
     
     // Assembles the code into memory
     function assembleCode() {
-      var BOOTSTRAP_ADDRESS = RamAddress;
+      var BOOTSTRAP_ADDRESS = CodeAddress;
 
       wasOutOfRangeBranch = false;
   
@@ -2491,7 +2491,7 @@ function SimulatorWidget(node) {
 
     // Dump binary as hex to new window
     function hexdump() {
-      openPopup(memory.format(RamAddress, codeLen), 'Hexdump');
+      openPopup(memory.format(CodeAddress, codeLen), 'Hexdump');
     }
 
     // TODO: Create separate disassembler object?
@@ -2624,7 +2624,7 @@ function SimulatorWidget(node) {
     }
 
     function disassemble() {
-      var startAddress = RamAddress;
+      var startAddress = CodeAddress;
       var currentAddress = startAddress;
       var endAddress = startAddress + codeLen;
       var instructions = [];
