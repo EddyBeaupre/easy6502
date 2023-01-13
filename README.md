@@ -17,8 +17,8 @@ The original 6502 version can be found at https://skilldrick.github.io/easy6502/
 |ORA (d)|0x12|No|OR with Accumulator (Indirect)|
 |AND (d)|0x32|No|AND with Accumulator (Indirect)|
 |EOR (d)|0x52|No|EOR with Accumulator (Indirect)|
-|ADC (d)|0x72|No|
-|STA (d)|0x92|No|
+|ADC (d)|0x72|No|Add to Accumulator with Carry (Indirect)|
+|STA (d)|0x92|No|Store Accumulator (Indirect)|
 |LDA (d)|0xB2|No|
 |CMP (d)|0xB2|No|
 |SBC (d)|0xF2|No|
