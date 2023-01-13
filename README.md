@@ -7,6 +7,8 @@ See http://eddybeaupre.github.io/easy65C02/ for the live site.
 
 The original 6502 version can be found at https://skilldrick.github.io/easy6502/
 
+This simulator load it's code a $E000 instead of $0600. Mostly to simulate running from ROM instead of RAM.
+
 ## Supported new opcodes
 
 |instruction|OpCode|Implemented|Description|
