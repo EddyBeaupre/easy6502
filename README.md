@@ -19,25 +19,24 @@ The original 6502 version can be found at https://skilldrick.github.io/easy6502/
 |EOR (d)|0x52|No|EOR with Accumulator (Indirect)|
 |ADC (d)|0x72|No|Add to Accumulator with Carry (Indirect)|
 |STA (d)|0x92|No|Store Accumulator (Indirect)|
-|LDA (d)|0xB2|No|
-|CMP (d)|0xB2|No|
-|SBC (d)|0xF2|No|
-|TSB d|0x04|No|
-|TRB d|0x14|No|
-|BIT d,X|0x34|No|
-|STZ d|0x64|No|
-|STZ d,X|0x74|No|
-|BIT #|0x89|No|
-|INC A|0x1A|No|
-|DEC A|0x3A|No|
-|PHY|0x5A|Yes|
-|PLY|0x7A|Yes|
-|PHX|0xDA|Yes|
-|PLX|0xFA|Yes|
-|TSB a|0x0C|No|
-|TRB a|0x1C|No|
-|TRB a|0x1C|No|
-|BIT a,X|0x3C|No|
-|JMP (a,X)|0x7C|No|
-|STZ a|0x9C|No|
-|Stz a,X|0x9E|No|
+|LDA (d)|0xB2|No|Load Accumulator (Indirect)|
+|CMP (d)|0xB2|No|Compare with Accumulator (Indirect)|
+|SBC (d)|0xF2|No|Subtract from Accumulator with Borrow (Indirect)|
+|TSB d|0x04|No|Test and Set Bits (Zero Page)|
+|TRB d|0x14|No|Test and Reset Bits (Zero Page)|
+|BIT d,X|0x34|No|Bit Test with Accumulator (Zero Page, X)|
+|STZ d|0x64|No|Store Zero (Zero Page)|
+|STZ d,X|0x74|No|Store Zero (Zero Page, X)|
+|BIT #|0x89|No|Bit Test with Accumulator (Immediate)|
+|INC A|0x1A|No|Increment Accumulator by one (Implied)|
+|DEC A|0x3A|No|Decrement Accumulator by one (Implied)|
+|PHY|0x5A|Yes|Push Y to Stack|
+|PLY|0x7A|Yes|Pull Y from Stack|
+|PHX|0xDA|Yes|Push X to Stack|
+|PLX|0xFA|Yes|Pull X from Stack|
+|TSB a|0x0C|No|Test and Set Bits (Absolute)|
+|TRB a|0x1C|No|Test and Reset Bits (Absolute)|
+|BIT a,X|0x3C|No|Bit Test with Accumulator (Absolute, X)|
+|JMP (a,X)|0x7C|No|Jump (Absolute, X)|
+|STZ a|0x9C|No|Store Zero (Absolute)|
+|STZ a,X|0x9E|No|Store Zero (Absolute, X)|
