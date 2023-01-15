@@ -21,8 +21,8 @@ So, why would you want to learn 6502? It's a dead language isn't it? Well,
 so's Latin. And they still teach that.
 [Q.E.D.](http://en.wikipedia.org/wiki/Q.E.D.)
 
-(Actually, I've been reliably informed that the 65C02 processors (A CMOS version of the 6502) are still being
-produced by [Western Design Center](http://www.westerndesigncenter.com/wdc/w65c02s-chip.cfm)
+Actually, the 65C02 processors (A CMOS version of the 6502) and it's support chips (PIA/VIA/ACIA)
+are still being produced by [Western Design Center](http://www.westerndesigncenter.com/wdc/w65c02s-chip.cfm)
 and [sold to hobbyists](http://www.mouser.co.uk/Search/Refine.aspx?Keyword=65C02), so clearly 6502
 *isn't* a dead language! Who knew?)
 
@@ -46,9 +46,9 @@ leave it to them. Plus, 6502 is *fun*. Nobody ever called x86 *fun*.
 
 <h2 id="first-program">Our first program</h2>
 
-So, let's dive in! That thing below is a little [JavaScript 6502 assembler and
-simulator](https://github.com/skilldrick/6502js) that I adapted for this book.
-Click **Assemble** then **Run** to assemble and run the snippet of assembly language.
+So, let's dive in! That thing below is a little JavaScript 65C02 assembler and
+simulator. Click **Assemble** then **Run** to assemble and run the snippet of
+assembly language.
 
 {% include start.html %}
 LDA #$01
