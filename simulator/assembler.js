@@ -593,6 +593,13 @@ function SimulatorWidget(node) {
         ORA();
       },
 
+      i12: function () {
+        var zp = popByte();
+        var value = memory.getWord(zp);
+        regA |= memory.get(value);
+        ORA();
+      },
+
       i15: function () {
         var addr = (popByte() + regX) & 0xff;
         regA |= memory.get(addr);
@@ -616,6 +623,12 @@ function SimulatorWidget(node) {
         var addr = popWord() + regY;
         regA |= memory.get(addr);
         ORA();
+      },
+
+      i1a: function () {
+        regA = (regA + 1) & 0xff;
+        setNVflagsForRegA();
+        //INA
       },
 
       i1d: function () {
@@ -726,6 +739,19 @@ function SimulatorWidget(node) {
         AND();
       },
 
+      i32: function () {
+        var zp = popByte();
+        var value = memory.getWord(zp);
+        regA &= memory.get(value);
+        AND();
+      },
+
+      i34: function () {
+        var zp = (popByte() + regX) & 0xff;
+        var value = memory.get(zp);
+        BIT(value);
+      },
+
       i35: function () {
         var addr = (popByte() + regX) & 0xff;
         regA &= memory.get(addr);
@@ -752,6 +778,18 @@ function SimulatorWidget(node) {
         var value = memory.get(addr);
         regA &= value;
         AND();
+      },
+
+      i3a: function () {
+        regA = (regA - 1) & 0xff;
+        setNVflagsForRegA();
+        //DEC
+      },
+
+      i3c: function () {
+        var addr = (popWord() + regX);
+        var value = memory.get(addr);
+        BIT(value);
       },
 
       i3d: function () {
@@ -847,6 +885,13 @@ function SimulatorWidget(node) {
       i51: function () {
         var zp = popByte();
         var value = memory.getWord(zp) + regY;
+        regA ^= memory.get(value);
+        EOR();
+      },
+
+      i52: function () {
+        var zp = popByte();
+        var value = memory.getWord(zp);
         regA ^= memory.get(value);
         EOR();
       },
@@ -993,6 +1038,14 @@ function SimulatorWidget(node) {
         //ADC
       },
 
+      i72: function () {
+        var zp = popByte();
+        var addr = memory.getWord(zp);
+        var value = memory.get(addr);
+        testADC(value);
+        //ADC
+      },
+
       i74: function () {
         memory.storeByte((popByte() + regX) & 0xff, 0x00);
         //STZ
@@ -1033,6 +1086,11 @@ function SimulatorWidget(node) {
         regY = stackPop();
         setNVflagsForRegY();
         //PLY
+      },
+
+      i7c: function () {
+        regPC = memory.getWord(popWord()+ regX);
+        //JMP
       },
 
       i7d: function () {
@@ -1087,6 +1145,11 @@ function SimulatorWidget(node) {
         //DEY
       },
 
+      i89: function () {
+        var value = popByte();
+        BIT(value);
+      },
+
       i8a: function () {
         regA = regX & 0xff;
         setNVflagsForRegA();
@@ -1117,6 +1180,13 @@ function SimulatorWidget(node) {
       i91: function () {
         var zp = popByte();
         var addr = memory.getWord(zp) + regY;
+        memory.storeByte(addr, regA);
+        //STA
+      },
+
+      i92: function () {
+        var zp = popByte();
+        var addr = memory.getWord(zp);
         memory.storeByte(addr, regA);
         //STA
       },
@@ -1242,6 +1312,13 @@ function SimulatorWidget(node) {
       ib1: function () {
         var zp = popByte();
         var addr = memory.getWord(zp) + regY;
+        regA = memory.get(addr);
+        LDA();
+      },
+
+      ib1: function () {
+        var zp = popByte();
+        var addr = memory.getWord(zp);
         regA = memory.get(addr);
         LDA();
       },
@@ -1375,6 +1452,14 @@ function SimulatorWidget(node) {
         //CMP
       },
 
+      id2: function () {
+        var zp = popByte();
+        var addr = memory.getWord(zp) + regY;
+        var value = memory.get(addr);
+        doCompare(regA, value);
+        //CMP
+      },
+
       id5: function () {
         var value = memory.get((popByte() + regX) & 0xff);
         doCompare(regA, value);
@@ -1498,6 +1583,14 @@ function SimulatorWidget(node) {
         var zp = popByte();
         var addr = memory.getWord(zp);
         var value = memory.get(addr + regY);
+        testSBC(value);
+        //SBC
+      },
+
+      if2: function () {
+        var zp = popByte();
+        var addr = memory.getWord(zp);
+        var value = memory.get(addr);
         testSBC(value);
         //SBC
       },
@@ -1878,10 +1971,10 @@ function SimulatorWidget(node) {
 
     var Opcodes = [
       /* Name, Imm,  ZP,   ZPX,  ZPY,  ABS, ABSX, ABSY,  IND, INDX, INDY, SNGL, BRA */
-      ["ADC", 0x69, 0x65, 0x75, null, 0x6d, 0x7d, 0x79, null, 0x61, 0x71, null, null],
-      ["AND", 0x29, 0x25, 0x35, null, 0x2d, 0x3d, 0x39, null, 0x21, 0x31, null, null],
+      ["ADC", 0x69, 0x65, 0x75, null, 0x6d, 0x7d, 0x79, 0x72, 0x61, 0x71, null, null],
+      ["AND", 0x29, 0x25, 0x35, null, 0x2d, 0x3d, 0x39, 0x32, 0x21, 0x31, null, null],
       ["ASL", null, 0x06, 0x16, null, 0x0e, 0x1e, null, null, null, null, 0x0a, null],
-      ["BIT", null, 0x24, null, null, 0x2c, null, null, null, null, null, null, null],
+      ["BIT", 0x89, 0x24, 0x34, null, 0x2c, 0x3c, null, null, null, null, null, null],
       ["BPL", null, null, null, null, null, null, null, null, null, null, null, 0x10],
       ["BMI", null, null, null, null, null, null, null, null, null, null, null, 0x30],
       ["BVC", null, null, null, null, null, null, null, null, null, null, null, 0x50],
@@ -1892,11 +1985,11 @@ function SimulatorWidget(node) {
       ["BNE", null, null, null, null, null, null, null, null, null, null, null, 0xd0],
       ["BEQ", null, null, null, null, null, null, null, null, null, null, null, 0xf0],
       ["BRK", null, null, null, null, null, null, null, null, null, null, 0x00, null],
-      ["CMP", 0xc9, 0xc5, 0xd5, null, 0xcd, 0xdd, 0xd9, null, 0xc1, 0xd1, null, null],
+      ["CMP", 0xc9, 0xc5, 0xd5, null, 0xcd, 0xdd, 0xd9, 0xd2, 0xc1, 0xd1, null, null],
       ["CPX", 0xe0, 0xe4, null, null, 0xec, null, null, null, null, null, null, null],
       ["CPY", 0xc0, 0xc4, null, null, 0xcc, null, null, null, null, null, null, null],
-      ["DEC", null, 0xc6, 0xd6, null, 0xce, 0xde, null, null, null, null, null, null],
-      ["EOR", 0x49, 0x45, 0x55, null, 0x4d, 0x5d, 0x59, null, 0x41, 0x51, null, null],
+      ["DEC", null, 0xc6, 0xd6, null, 0xce, 0xde, null, null, null, null, 0x3a, null],
+      ["EOR", 0x49, 0x45, 0x55, null, 0x4d, 0x5d, 0x59, 0x52, 0x41, 0x51, null, null],
       ["CLC", null, null, null, null, null, null, null, null, null, null, 0x18, null],
       ["SEC", null, null, null, null, null, null, null, null, null, null, 0x38, null],
       ["CLI", null, null, null, null, null, null, null, null, null, null, 0x58, null],
@@ -1904,15 +1997,15 @@ function SimulatorWidget(node) {
       ["CLV", null, null, null, null, null, null, null, null, null, null, 0xb8, null],
       ["CLD", null, null, null, null, null, null, null, null, null, null, 0xd8, null],
       ["SED", null, null, null, null, null, null, null, null, null, null, 0xf8, null],
-      ["INC", null, 0xe6, 0xf6, null, 0xee, 0xfe, null, null, null, null, null, null],
-      ["JMP", null, null, null, null, 0x4c, null, null, 0x6c, null, null, null, null],
+      ["INC", null, 0xe6, 0xf6, null, 0xee, 0xfe, null, null, null, null, 0x1a, null],
+      ["JMP", null, null, null, null, 0x4c, 0x7c, null, 0x6c, null, null, null, null],
       ["JSR", null, null, null, null, 0x20, null, null, null, null, null, null, null],
-      ["LDA", 0xa9, 0xa5, 0xb5, null, 0xad, 0xbd, 0xb9, null, 0xa1, 0xb1, null, null],
+      ["LDA", 0xa9, 0xa5, 0xb5, null, 0xad, 0xbd, 0xb9, 0xb2, 0xa1, 0xb1, null, null],
       ["LDX", 0xa2, 0xa6, null, 0xb6, 0xae, null, 0xbe, null, null, null, null, null],
       ["LDY", 0xa0, 0xa4, 0xb4, null, 0xac, 0xbc, null, null, null, null, null, null],
       ["LSR", null, 0x46, 0x56, null, 0x4e, 0x5e, null, null, null, null, 0x4a, null],
       ["NOP", null, null, null, null, null, null, null, null, null, null, 0xea, null],
-      ["ORA", 0x09, 0x05, 0x15, null, 0x0d, 0x1d, 0x19, null, 0x01, 0x11, null, null],
+      ["ORA", 0x09, 0x05, 0x15, null, 0x0d, 0x1d, 0x19, 0x12, 0x01, 0x11, null, null],
       ["TAX", null, null, null, null, null, null, null, null, null, null, 0xaa, null],
       ["TXA", null, null, null, null, null, null, null, null, null, null, 0x8a, null],
       ["DEX", null, null, null, null, null, null, null, null, null, null, 0xca, null],
@@ -1925,8 +2018,8 @@ function SimulatorWidget(node) {
       ["ROL", null, 0x26, 0x36, null, 0x2e, 0x3e, null, null, null, null, 0x2a, null],
       ["RTI", null, null, null, null, null, null, null, null, null, null, 0x40, null],
       ["RTS", null, null, null, null, null, null, null, null, null, null, 0x60, null],
-      ["SBC", 0xe9, 0xe5, 0xf5, null, 0xed, 0xfd, 0xf9, null, 0xe1, 0xf1, null, null],
-      ["STA", null, 0x85, 0x95, null, 0x8d, 0x9d, 0x99, null, 0x81, 0x91, null, null],
+      ["SBC", 0xe9, 0xe5, 0xf5, null, 0xed, 0xfd, 0xf9, 0xf2, 0xe1, 0xf1, null, null],
+      ["STA", null, 0x85, 0x95, null, 0x8d, 0x9d, 0x99, 0x92, 0x81, 0x91, null, null],
       ["STZ", null, 0x64, 0x74, null, 0x9c, 0x9e, null, null, null, null, null, null],
       ["TXS", null, null, null, null, null, null, null, null, null, null, 0x9a, null],
       ["TSX", null, null, null, null, null, null, null, null, null, null, 0xba, null],
