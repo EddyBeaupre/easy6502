@@ -35,10 +35,10 @@ This simulator load it's code a $E000 instead of $0600. Mostly to simulate runni
 |PLY|0x7A|Yes|Pull Y from Stack|
 |PHX|0xDA|Yes|Push X to Stack|
 |PLX|0xFA|Yes|Pull X from Stack|
-|TSB d|0x04|No|Test and Set Bits (Zero Page)|
-|TSB a|0x0C|No|Test and Set Bits (Absolute)|
-|TRB d|0x14|No|Test and Reset Bits (Zero Page)|
-|TRB a|0x1C|No|Test and Reset Bits (Absolute)|
+|TRB d|0x14|Yes|Test and Reset Bits (Zero Page)|
+|TRB a|0x1C|Yes|Test and Reset Bits (Absolute)|
+|TSB d|0x04|Yes|Test and Set Bits (Zero Page)|
+|TSB a|0x0C|Yes|Test and Set Bits (Absolute)|
 |JMP (a,X)|0x7C|Yes|Jump (Absolute, X)|
 
 Full list of 65C02 OpCodes: https://feertech.com/legion/reference65c02.html
