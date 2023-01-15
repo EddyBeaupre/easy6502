@@ -913,6 +913,11 @@ function SimulatorWidget(node) {
         //ADC
       },
 
+      i64: function () {
+        memory.storeByte(popByte(), 0x00);
+        //STZ
+      },
+
       i65: function () {
         var addr = popByte();
         var value = memory.get(addr);
@@ -988,6 +993,11 @@ function SimulatorWidget(node) {
         //ADC
       },
 
+      i74: function () {
+        memory.storeByte((popByte() + regX) & 0xff, 0x00);
+        //STZ
+      },
+
       i75: function () {
         var addr = (popByte() + regX) & 0xff;
         var value = memory.get(addr);
@@ -1041,6 +1051,12 @@ function SimulatorWidget(node) {
         if (sf) { value |= 0x80; }
         memory.storeByte(addr, value);
         ROR(value);
+      },
+
+      i80: function () {
+        var offset = popByte();
+        jumpBranch(offset);
+        //BRA
       },
 
       i81: function () {
@@ -1136,10 +1152,21 @@ function SimulatorWidget(node) {
         //TXS
       },
 
+      i9c: function () {
+        memory.storeByte(popWord(), 0x00);
+        //STZ
+      },
+
       i9d: function () {
         var addr = popWord();
         memory.storeByte(addr + regX, regA);
         //STA
+      },
+
+      i9e: function () {
+        var addr = popWord();
+        memory.storeByte(addr + regX, 0x00);
+        //STZ
       },
 
       ia0: function () {
@@ -1859,6 +1886,7 @@ function SimulatorWidget(node) {
       ["BMI", null, null, null, null, null, null, null, null, null, null, null, 0x30],
       ["BVC", null, null, null, null, null, null, null, null, null, null, null, 0x50],
       ["BVS", null, null, null, null, null, null, null, null, null, null, null, 0x70],
+      ["BRA", null, null, null, null, null, null, null, null, null, null, null, 0x80],
       ["BCC", null, null, null, null, null, null, null, null, null, null, null, 0x90],
       ["BCS", null, null, null, null, null, null, null, null, null, null, null, 0xb0],
       ["BNE", null, null, null, null, null, null, null, null, null, null, null, 0xd0],
@@ -1899,6 +1927,7 @@ function SimulatorWidget(node) {
       ["RTS", null, null, null, null, null, null, null, null, null, null, 0x60, null],
       ["SBC", 0xe9, 0xe5, 0xf5, null, 0xed, 0xfd, 0xf9, null, 0xe1, 0xf1, null, null],
       ["STA", null, 0x85, 0x95, null, 0x8d, 0x9d, 0x99, null, 0x81, 0x91, null, null],
+      ["STZ", null, 0x64, 0x74, null, 0x9c, 0x9e, null, null, null, null, null, null],
       ["TXS", null, null, null, null, null, null, null, null, null, null, 0x9a, null],
       ["TSX", null, null, null, null, null, null, null, null, null, null, 0xba, null],
       ["PHA", null, null, null, null, null, null, null, null, null, null, 0x48, null],

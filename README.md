@@ -13,9 +13,11 @@ This simulator load it's code a $E000 instead of $0600. Mostly to simulate runni
 
 |instruction|OpCode|Implemented|Description|
 |-----------|------|-----------|-----------|
-|BRA r|0x7A|No|Branch Always|
-|STZ a|0x9C|No|Store Zero (Absolute)|
-|STZ a,X|0x9E|No|Store Zero (Absolute, X)|
+|BRA r|0x80|Yes|Branch Always|
+|STZ d|0x64|Yes|Store Zero (Zero Page)|
+|STZ d,X|0x74|Yes|Store Zero (Zero Page, X)|
+|STZ a|0x9C|Yes|Store Zero (Absolute)|
+|STZ a,X|0x9E|Yes|Store Zero (Absolute, X)|
 |ORA (d)|0x12|No|OR with Accumulator (Indirect)|
 |AND (d)|0x32|No|AND with Accumulator (Indirect)|
 |EOR (d)|0x52|No|EOR with Accumulator (Indirect)|
@@ -27,8 +29,6 @@ This simulator load it's code a $E000 instead of $0600. Mostly to simulate runni
 |TSB d|0x04|No|Test and Set Bits (Zero Page)|
 |TRB d|0x14|No|Test and Reset Bits (Zero Page)|
 |BIT d,X|0x34|No|Bit Test with Accumulator (Zero Page, X)|
-|STZ d|0x64|No|Store Zero (Zero Page)|
-|STZ d,X|0x74|No|Store Zero (Zero Page, X)|
 |BIT #|0x89|No|Bit Test with Accumulator (Immediate)|
 |INC A|0x1A|No|Increment Accumulator by one (Implied)|
 |DEC A|0x3A|No|Decrement Accumulator by one (Implied)|
